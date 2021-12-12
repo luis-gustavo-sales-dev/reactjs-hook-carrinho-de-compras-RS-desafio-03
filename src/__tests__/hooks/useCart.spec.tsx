@@ -125,6 +125,7 @@ describe('useCart Hook', () => {
     );
   });
 
+  
   it('should not be able add a product that does not exist', async () => {
     const productId = 4;
 
@@ -153,6 +154,7 @@ describe('useCart Hook', () => {
     );
     expect(mockedSetItemLocalStorage).not.toHaveBeenCalled();
   });
+
 
   it('should be able to increase a product amount when adding a product that already exists on cart', async () => {
     const productId = 1;
@@ -205,6 +207,7 @@ describe('useCart Hook', () => {
     );
   });
 
+
   it('should not be able to increase a product amount when running out of stock', async () => {
     const productId = 2;
 
@@ -243,6 +246,7 @@ describe('useCart Hook', () => {
     );
     expect(mockedSetItemLocalStorage).not.toHaveBeenCalled();
   });
+
 
   it('should be able to remove a product', () => {
     const productId = 2;
@@ -428,4 +432,5 @@ describe('useCart Hook', () => {
       expect(mockedSetItemLocalStorage).not.toHaveBeenCalled();
     }
   });
+
 });
