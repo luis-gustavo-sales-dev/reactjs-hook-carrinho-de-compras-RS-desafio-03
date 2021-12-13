@@ -41,7 +41,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       // Procure pelo produto no carrinho
       const findProduct = cart.findIndex( product => product.id === productId)
 
-      console.log("findProduct: ", findProduct)
+      //console.log("findProduct: ", findProduct)
       // Se produto já existe no carrinho
       if (findProduct > -1) {
 
@@ -50,8 +50,8 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
           .then( (response) => {
             return response.data
         })
-        console.log("stock.amount", stock.amount)
-        console.log("cart[findProduct].amount", cart[findProduct].amount)
+        //console.log("stock.amount", stock.amount)
+        //console.log("cart[findProduct].amount", cart[findProduct].amount)
         if (stock.amount > cart[findProduct].amount) {
           // Se tem estoque adicione 1 ao amount do produto localizado
           // Adicione o novo array ao setCart
@@ -63,7 +63,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
           toast.error('Quantidade solicitada fora de estoque')
         }
       } else {
-        console.log("Não tem esse produto no carrinho!")
+        //console.log("Não tem esse produto no carrinho!")
         // Se não existir:
         // Verifique se tem produto no estoque
         const stock: Stock = await api.get(`/stock/${productId}`)
@@ -72,18 +72,18 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
         })
 
         
-        console.log("Stock do produto: ", stock)
+        //console.log("Stock do produto: ", stock)
         
         // pegue o novo produto via api.get e coloque o amount dele como 1
         const product: Product = await api.get(`/products/${productId}`)
           .then( response => response.data )
         
-        console.log("Produto adquirido: ", product)
+        //console.log("Produto adquirido: ", product)
         // Se tem produto no estoque
         if (stock.amount > 0) {
-          console.log("Tem estoque!")
+          //console.log("Tem estoque!")
           product.amount = 1
-          console.log("Produto adquirido: ", product)
+          //console.log("Produto adquirido: ", product)
           cart.push(product)
           
           setCart([...cart])
@@ -97,7 +97,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     } catch(error: any) {
       toast.error('Erro na adição do produto')
       // TODO
-      console.log('Erro na adição do produto')
+      //console.log('Erro na adição do produto')
     }
   };
 
@@ -108,11 +108,13 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       
       // Produto encontrado
       if (findProduct > -1) {
-        console.log(cart)
+        //console.log(cart)
         let newCart = cart.filter( (product) => {
-          if (product.id !== productId) return product
+          if (product.id !== productId) {
+            return product
+          }
         })
-        console.log(newCart)
+        //console.log(newCart)
         setCart([...newCart])
         localStorage.setItem('@RocketShoes:cart', JSON.stringify(newCart))
       } else {
@@ -128,10 +130,11 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     amount,
   }: UpdateProductAmount) => {
     try {
+      
       // Procure pelo produto no carrinho
       const findProduct = cart.findIndex( product => product.id === productId)
 
-      console.log("findProduct: ", findProduct)
+      // console.log("findProduct: ", findProduct)
       // Se produto já existe no carrinho
       if (findProduct > -1) {
 
@@ -140,18 +143,27 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
           .then( (response) => {
             return response.data
         })
-        console.log("stock.amount", stock.amount)
-        console.log("cart[findProduct].amount", cart[findProduct].amount)
-        if (stock.amount > cart[findProduct].amount) {
-          // Se tem estoque adicione 1 ao amount do produto localizado
-          // Adicione o novo array ao setCart
-          cart[findProduct].amount += 1;
-          setCart([...cart])
-          localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
+
+        //console.log("stock.amount", stock.amount)
+        //console.log("cart[findProduct].amount", cart[findProduct].amount)
+        
+
+        
+        if (stock.amount >= amount) {
+          if (amount > 0) {
+            // Se tem estoque adicione 1 ao amount do produto localizado
+            // Adicione o novo array ao setCart
+            cart[findProduct].amount = amount;
+            setCart([...cart])
+            localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
+          }
+          
         } else {
           // Se não tem no estoque retorne um erro
+          console.log("cart[findProduct].amount", cart[findProduct].amount)
           toast.error('Quantidade solicitada fora de estoque')
         }
+
       } else {
         toast.error('Erro na alteração de quantidade do produto')
       }
