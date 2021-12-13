@@ -17,6 +17,11 @@ interface Product {
   amount: number;
 }
 
+interface ProductFormatted extends Product {
+  priceFormatted: string;
+}
+
+
 const Cart = (): JSX.Element => {
   const { cart, removeProduct, updateProductAmount } = useCart();
   const [total, setTotal] = useState('');
@@ -31,7 +36,16 @@ const Cart = (): JSX.Element => {
   }, [cart])
 
 
-
+  let cartFormated = cart.map ( ({ id, title, price, image, amount}) => {
+    return {
+      id,
+      title,
+      price,
+      image,
+      amount,
+      priceFormated: formatPrice(price)
+    }
+  })
 
   function handleProductIncrement(product: Product) {
     // TODO
@@ -85,14 +99,14 @@ const Cart = (): JSX.Element => {
           </tr>
         </thead>
         <tbody>
-          { cart.map ( (product, index) => {
+          { cartFormated.map ( (product, index) => {
             return (<tr data-testid="product" key={product.id}>
                 <td>
                   <img src="https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis1.jpg" alt="Tênis de Caminhada Leve Confortável" />
                 </td>
                 <td>
                   <strong>{product.title}</strong>
-                  <span>{product.price}</span>
+                  <span>{product.priceFormated}</span>
                 </td>
                 <td>
                   <div>
