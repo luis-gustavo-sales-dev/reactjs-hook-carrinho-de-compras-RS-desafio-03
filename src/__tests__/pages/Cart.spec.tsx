@@ -98,7 +98,7 @@ describe('Cart Page', () => {
     expect(firstProductAmount).toHaveDisplayValue('2');
     expect(secondProductAmount).toHaveDisplayValue('1');
   });
-/*
+
   it('should not be able to decrease a product amount when value is 1', () => {
     const { getAllByTestId } = render(<Cart />);
 
@@ -144,5 +144,4 @@ describe('Cart Page', () => {
     expect(firstProduct).not.toBeInTheDocument();
     expect(secondProduct).toBeInTheDocument();
   });
-  */
 });

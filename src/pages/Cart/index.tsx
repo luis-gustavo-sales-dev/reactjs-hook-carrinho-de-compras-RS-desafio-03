@@ -24,16 +24,24 @@ interface ProductFormatted extends Product {
 
 const Cart = (): JSX.Element => {
   const { cart, removeProduct, updateProductAmount } = useCart();
-  const [total, setTotal] = useState('');
+  
 
-  useEffect( () => {
+  let total = formatPrice(cart.reduce( (total, product) => {
+      total += product.amount * product.price
+      return total
+    }, 0))
+
+  // Isso daqui é o jeito não muito legal de se fazer o que foi feito acima.
+  // Usando estado (useState) para controlar a mudança de uma variável pode acarretar problemas na hora do teste. Sempre prefira usar uma variável normal (como a total, por exemplo) para realizar calculos que não vão precisar renderizar vários componentes na tela.
+  // const [total, setTotal] = useState('');
+  /*useEffect( () => {
     const tot = cart.reduce( (total, product) => {
       total += product.amount * product.price
       return total
     }, 0)
     
     setTotal(formatPrice(tot))
-  }, [cart])
+  }, [cart])*/
 
 
   let cartFormated = cart.map ( ({ id, title, price, image, amount}) => {
