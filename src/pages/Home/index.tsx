@@ -35,10 +35,20 @@ const Home = (): JSX.Element => {
   useEffect(() => {
     async function loadProducts() {
       // TODO
-      let prod = await api.get(`/products`)
+      let prod: ProductFormatted[] = await api.get(`/products`)
         .then( response => response.data)
       
-      setProducts(prod)
+      let p = prod.map ( ({ id, title, price, image}) => {
+          return {
+            id,
+            title,
+            price,
+            image,
+            priceFormatted: formatPrice(price)
+          }
+        })
+      
+      setProducts(p)
     }
 
     loadProducts();
@@ -55,7 +65,7 @@ const Home = (): JSX.Element => {
         products.map( (product) => {
           return (
             <li key={product.id}>
-              <img src="https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis1.jpg" alt="Tênis de Caminhada Leve Confortável" />
+              <img src={product.image} alt={product.image} />
               <strong>{product.title}</strong>
               <span>{product.priceFormatted}</span>
               <button
